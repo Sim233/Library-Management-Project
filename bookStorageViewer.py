@@ -67,7 +67,7 @@ class BookStorageViewer(QWidget):
         Hlayout.addWidget(self.backButton)
         widget = QWidget()
         widget.setLayout(Hlayout)
-        widget.setFixedWidth(300)
+        widget.setFixedWidth(500)
         self.Hlayout2.addWidget(widget)
 
         # 设置查询及浏览书籍组件

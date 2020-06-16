@@ -8,7 +8,7 @@ from PyQt5.QtSql import *
 
 
 class dropBookDialog(QDialog):
-    drop_book_successful_signal=pyqtSignal()
+    drop_book_success_signal = pyqtSignal()
 
     def __init__(self, parent=None):
         super(dropBookDialog, self).__init__(parent)
@@ -96,12 +96,12 @@ class dropBookDialog(QDialog):
             print(QMessageBox.warning(self, "警告", "你所要删除的书不存在，请查看输入", QMessageBox.Ok))
             return
         elif query.value(5) != query.value(4) :
-            print(QMessageBox.information(self, "警告", "本书有在外未归还的书籍，请归还后在操作", QMessageBox.Ok))
+            print(QMessageBox.information(self, "警告", "本书有在外未归还的书籍，请归还后再操作", QMessageBox.Ok))
             return
 
         # 开始删除操作：
         # 删除book表：
-        sql = "DELETE From book where bookID='%s'" % bookId
+        sql = "DELETE from book where bookID='%s'" % bookId
         query.exec_(sql)
         db.commit()
         print(QMessageBox.information(self, "提示", "删除成功!", QMessageBox.Yes, QMessageBox.Yes))
@@ -118,13 +118,14 @@ class dropBookDialog(QDialog):
         db.setDatabaseName('./library.db')
         db.open()
         query = QSqlQuery()
-        sql = "SELECT * from book where bookID='%s'" %bookId
+        sql = "SELECT * from book where bookID='%s'" % bookId
         query.exec_(sql)
         if query.next():
             self.bookNameEdit.setText(query.value(0))
             self.authNameEdit.setText(query.value(2))
             self.categoryComboBox.setCurrentText(query.value(3))
         return
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

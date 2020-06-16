@@ -109,7 +109,7 @@ class addBookDialog(QDialog):
                 print('旧书')
             else:
                 sql = "Insert into book Values ('%s', '%s', '%s','%s', '%d', '%d')"%(
-                    bookName, bookID, bookCate, bookaur, bookNum, bookNum
+                    bookName, bookID, bookaur, bookCate, bookNum, bookNum
                 )
                 print('新书')
             query.exec_(sql)
