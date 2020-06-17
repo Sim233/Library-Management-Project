@@ -17,6 +17,7 @@ class UserManage(QDialog):
         # 用户数
         self.userCount = 0
         self.setUpUI()
+        # todo: 可修改学生信息
 
     def setUpUI(self):
         self.db = QSqlDatabase.addDatabase("QSQLITE")
@@ -50,9 +51,9 @@ class UserManage(QDialog):
     def getResult(self):
         sql = "SELECT userId, userName FROM user WHERE IsAdmin=0"
         self.query.exec_(sql)
-        self.userCount = 0;
-        while (self.query.next()):
-            self.userCount += 1;
+        self.userCount = 0
+        while self.query.next():
+            self.userCount += 1
         sql = "SELECT userId,userName FROM user WHERE IsAdmin=0"
         self.query.exec_(sql)
 
@@ -60,7 +61,7 @@ class UserManage(QDialog):
         font = QFont()
         font.setPixelSize(14)
         for i in range(self.userCount):
-            if (self.query.next()):
+            if self.query.next():
                 StudentIdItem = QTableWidgetItem(self.query.value(0))
                 StudentNameItem = QTableWidgetItem(self.query.value(1))
                 StudentIdItem.setFont(font)

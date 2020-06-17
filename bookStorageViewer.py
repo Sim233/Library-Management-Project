@@ -81,7 +81,6 @@ class BookStorageViewer(QWidget):
         self.queryModel = QSqlQueryModel()
         self.searchButtonClicked()
         self.tableView.setModel(self.queryModel)
-        # todo: 表头栏宽度可调
 
         self.queryModel.setHeaderData(0, Qt.Horizontal, "书号")
         self.queryModel.setHeaderData(1, Qt.Horizontal, "书名")
@@ -130,17 +129,17 @@ class BookStorageViewer(QWidget):
     def recordQuery(self, index):
         queryCondition = ""
         conditionChoice = self.condisionComboBox.currentText()
-        if (conditionChoice == "按书名查询"):
-            conditionChoice = 'bookname'
-        elif (conditionChoice == "按书号查询"):
+        if conditionChoice == "按书名查询":
+            conditionChoice = 'bookName'
+        elif conditionChoice == "按书号查询":
             conditionChoice = 'BookID'
-        elif (conditionChoice == "按作者查询"):
-            conditionChoice = 'bookaur'
-        elif (conditionChoice == '按分类查询'):
-            conditionChoice = 'bookcate'
+        elif conditionChoice == "按作者查询":
+            conditionChoice = 'bookAur'
+        elif conditionChoice == '按分类查询':
+            conditionChoice = 'bookCategory'
 
         # 默认无查询时
-        if (self.searchEdit.text() == ""):
+        if self.searchEdit.text() == "":
             queryCondition = "select * from Book"
             self.queryModel.setQuery(queryCondition)
             self.totalRecord = self.queryModel.rowCount()
@@ -163,9 +162,9 @@ class BookStorageViewer(QWidget):
         self.queryModel.setQuery(queryCondition)
         self.totalRecord = self.queryModel.rowCount()
         # 当查询无记录时的操作
-        if (self.totalRecord == 0):
+        if self.totalRecord == 0:
             print(QMessageBox.information(self, "提醒", "查询无记录", QMessageBox.Yes, QMessageBox.Yes))
-            queryCondition = "select bookname, bookID, bookaur, bookcate, numstore, numavai from Book"
+            queryCondition = "select bookID, bookName, bookAur, bookCategory, numstore, numavai from Book"
             self.queryModel.setQuery(queryCondition)
             self.totalRecord = self.queryModel.rowCount()
             self.totalPage = int((self.totalRecord + self.pageRecord - 1) / self.pageRecord)
@@ -200,7 +199,7 @@ class BookStorageViewer(QWidget):
     # 向前翻页
     def prevButtonClicked(self):
         self.currentPage -= 1
-        if (self.currentPage <= 1):
+        if self.currentPage <= 1:
             self.currentPage = 1
         self.pageEdit.setText(str(self.currentPage))
         index = (self.currentPage - 1) * self.pageRecord
@@ -210,7 +209,7 @@ class BookStorageViewer(QWidget):
     # 向后翻页
     def backButtonClicked(self):
         self.currentPage += 1
-        if (self.currentPage >= int(self.totalPage)):
+        if self.currentPage >= int(self.totalPage):
             self.currentPage = int(self.totalPage)
         self.pageEdit.setText(str(self.currentPage))
         index = (self.currentPage - 1) * self.pageRecord
@@ -219,11 +218,11 @@ class BookStorageViewer(QWidget):
 
     # 点击跳转
     def jumpToButtonClicked(self):
-        if (self.pageEdit.text().isdigit()):
+        if self.pageEdit.text().isdigit():
             self.currentPage = int(self.pageEdit.text())
-            if (self.currentPage > self.totalPage):
+            if self.currentPage > self.totalPage:
                 self.currentPage = self.totalPage
-            if (self.currentPage <= 1):
+            if self.currentPage <= 1:
                 self.currentPage = 1
         else:
             self.currentPage = 1

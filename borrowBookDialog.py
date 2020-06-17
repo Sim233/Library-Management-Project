@@ -27,7 +27,21 @@ class borrowBookDialog(QDialog):
         else:
             return
         if stuGrad == 1:
-            print(QMessageBox.warning(self, "警告", "您已毕业，无借书权限！", QMessageBox.Ok))
+            self.setWindowModality(Qt.WindowModal)
+            self.setWindowTitle("提示")
+            self.resize(200, 100)
+            self.layout = QFormLayout()
+            self.setLayout(self.layout)
+            self.layout.setVerticalSpacing(100)
+            self.gradLabel = QLabel('您已毕业，无借书权限！')
+            self.layout.addRow('', self.gradLabel)
+            self.gradLabel.setAlignment(Qt.AlignCenter)
+            self.layout.setVerticalSpacing(30)
+            self.borrowBookButton = QPushButton('OK')
+            self.borrowBookButton.setFixedWidth(45)
+            self.borrowBookButton.setFixedHeight(25)
+            self.layout.addRow('', self.borrowBookButton)
+            self.borrowBookButton.clicked.connect(lambda: self.close())
             return
 
         # 判断是否有逾期未还的书
@@ -36,7 +50,21 @@ class borrowBookDialog(QDialog):
         sql = "SELECT * from borrow where returntime < '%s' and userID='%s'" % (date, self.studentId)
         query.exec_(sql)
         if query.next():
-            print(QMessageBox.warning(self, "警告", "你有逾期未还的书籍，暂无借书权限！", QMessageBox.Ok))
+            self.setWindowModality(Qt.WindowModal)
+            self.setWindowTitle("警告")
+            self.resize(250, 100)
+            self.layout = QFormLayout()
+            self.setLayout(self.layout)
+            self.layout.setVerticalSpacing(100)
+            self.gradLabel = QLabel('您有逾期未还的书籍，暂无借书权限！')
+            self.layout.addRow('', self.gradLabel)
+            self.gradLabel.setAlignment(Qt.AlignCenter)
+            self.layout.setVerticalSpacing(30)
+            self.borrowBookButton = QPushButton('OK')
+            self.borrowBookButton.setFixedWidth(45)
+            self.borrowBookButton.setFixedHeight(25)
+            self.layout.addRow('', self.borrowBookButton)
+            self.borrowBookButton.clicked.connect(lambda: self.close())
             return
 
         self.setUpUI()
@@ -118,7 +146,7 @@ class borrowBookDialog(QDialog):
         db.open()
         query = QSqlQuery()
 
-        #根据索书号进行查询：
+        # 根据索书号进行查询：
         sql = "SELECT * from book where bookID='%s' " % bookId
         query.exec_(sql)
         if (not query.next()):

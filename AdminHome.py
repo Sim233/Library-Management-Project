@@ -8,6 +8,7 @@ from dropBookDialog import dropBookDialog
 from bookStorageViewer import BookStorageViewer
 from UserManage import UserManage
 
+
 class AdminHome(QWidget):
     def __init__(self):
         super().__init__()
@@ -25,6 +26,7 @@ class AdminHome(QWidget):
         self.userManageButton = QPushButton("用户管理")
         self.addBookButton = QPushButton("添加书籍")
         self.dropBookButton = QPushButton("淘汰书籍")
+        # todo: 逾期未还书名单，书籍
         self.userManageButton.setFont(font)
         self.addBookButton.setFont(font)
         self.dropBookButton.setFont(font)
@@ -58,9 +60,10 @@ class AdminHome(QWidget):
         dropDialog.exec_()
 
     def userManage(self):
-        UserDelete=UserManage(self)
+        UserDelete = UserManage(self)
         UserDelete.show()
         UserDelete.exec_()
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
