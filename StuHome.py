@@ -48,7 +48,7 @@ class StudentHome(QWidget):
         self.allBookButton.setFont(font)
 
         self.storageView = BookStorageViewer()
-        self.borrowStatusView=BorrowStatusViewer(self.StudentId)
+        self.borrowStatusView = BorrowStatusViewer(self.StudentId)
         self.allBookButton.setEnabled(False)
 
         self.layout.addLayout(self.buttonLayout)

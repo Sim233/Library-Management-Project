@@ -28,11 +28,9 @@ class addBookDialog(QDialog):
         font = QFont()
         font.setPixelSize(20)
         self.DialogLabel.setFont(font)
-
         self.layout.addRow('', self.DialogLabel)
 
         # 表单式布局
-
         # 开始设定输入内容
         # 书籍名称
         # 书籍编号(8位)
@@ -96,14 +94,14 @@ class addBookDialog(QDialog):
             bookNum = int(bookNum)
             db = QSqlDatabase.addDatabase("QSQLITE")
             db.setDatabaseName('./library.db')
-            if(db.open()):
+            if db.open():
                 print('成功')
             else:
                 print('失败')
             query = QSqlQuery()
             sql = "SELECT * FROM book WHERE bookID='%s'" % bookID
             query.exec_(sql)
-            if (query.next()):
+            if query.next():
                 sql = "UPDATE book SET numstore = numstore + %d, numavai = numavai + %d WHERE bookID='%s'" % (bookNum, bookNum, bookID)
                 print('旧书')
                 query.exec_(sql)

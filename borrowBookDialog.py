@@ -208,7 +208,7 @@ class borrowBookDialog(QDialog):
         sql = "SELECT * from book where bookID='%s'" %bookId
         query.exec_(sql)
         if query.next():
-            self.bookNameEdit.setText(query.value(0))
+            self.bookNameEdit.setText(query.value(1))
             self.authNameEdit.setText(query.value(2))
             self.categoryComboBox.setCurrentText(query.value(3))
         return

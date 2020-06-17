@@ -44,25 +44,29 @@ class SignupWidget(QWidget):
         # 用户ID
         # 用户密码
         # 用户身份（学生/老师）
-        self.UserIDLabel = QLabel('学  号：')
+        self.UserIDLabel = QLabel('学    号：')
         self.UserIDLineEdit = QLineEdit()
         self.UserIDLineEdit.setFixedHeight(32)
         self.UserIDLineEdit.setFixedWidth(180)
         self.UserIDLineEdit.setMaxLength(10)
         self.formlayout.addRow(self.UserIDLabel, self.UserIDLineEdit)
 
-        self.UserNameLabel = QLabel('姓  名 ：')
+        self.UserNameLabel = QLabel('姓    名：')
         self.UserNameLineEdit = QLineEdit()
         self.UserNameLineEdit.setFixedHeight(32)
         self.UserNameLineEdit.setFixedWidth(180)
         self.UserNameLineEdit.setMaxLength(10)
         self.formlayout.addRow(self.UserNameLabel, self.UserNameLineEdit)
 
-        self.UserpasswordLabel = QLabel('密  码：')
+        self.UserpasswordLabel = QLabel('密    码：')
         self.UserpasswordLineEdit = QLineEdit()
         self.UserpasswordLineEdit.setFixedHeight(32)
         self.UserpasswordLineEdit.setFixedWidth(180)
         self.UserpasswordLineEdit.setMaxLength(8)
+        passwordFont = QFont()
+        passwordFont.setPixelSize(10)
+        self.UserpasswordLineEdit.setFont(passwordFont)
+        self.UserpasswordLineEdit.setEchoMode(QLineEdit.Password)
         self.formlayout.addRow(self.UserpasswordLabel, self.UserpasswordLineEdit)
 
         self.UserIdentityLabel = QLabel('教师/学生：')
@@ -105,7 +109,7 @@ class SignupWidget(QWidget):
         user_name = self.UserNameLineEdit.text()
         user_password = self.UserpasswordLineEdit.text()
         user_identity = self.UserIdentityLineEdit.text()
-        user_grad_t = self.UserGraduatedBox.text()
+        user_grad_t = self.UserGraduatedBox.currentText()
         if user_identity == '学生':
             user_admin = 0
         elif user_identity == '教师':
@@ -130,7 +134,7 @@ class SignupWidget(QWidget):
             db.setDatabaseName('./library.db')
             db.open()
             query = QSqlQuery()
-            sql = "SELECT * from user where userID = '%s'" % (user_id)
+            sql = "SELECT * from user where userID = '%s'" % user_id
             query.exec_(sql)
             if (query.next()):
                 print(QMessageBox.warning(self, "警告", '该用户ID已注册！', QMessageBox.Ok))
@@ -145,17 +149,10 @@ class SignupWidget(QWidget):
             db.close()
             return
 
+
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     app.setStyleSheet(qdarkstyle.load_stylesheet_pyqt5())
     mainWindow = SignupWidget()
     mainWindow.show()
     sys.exit(app.exec_())
-
-
-
-
-
-
-
-
