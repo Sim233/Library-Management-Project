@@ -36,7 +36,6 @@ class SignInWidget(QWidget):
         self.lineEdit2.setFixedWidth(180)
         self.lineEdit2.setMaxLength(16)
 
-
         passwordFont = QFont()
         passwordFont.setPixelSize(10)
         self.lineEdit2.setFont(passwordFont)
@@ -82,7 +81,7 @@ class SignInWidget(QWidget):
         db.setDatabaseName('./library.db')
         db.open()
         query = QSqlQuery()
-        sql = "SELECT * FROM user WHERE StudentId='%s'" % (studentId)
+        sql = "SELECT * FROM user WHERE userId='%s'" % studentId
         query.exec_(sql)
         db.close()
 
@@ -91,7 +90,7 @@ class SignInWidget(QWidget):
         else:
             if (studentId == query.value(0) and password == query.value(2)):
                 # 如果是管理员
-                if (query.value(3)==1):
+                if query.value(3) == 1:
                     self.is_admin_signal.emit()
                 else:
                     self.is_student_signal.emit(studentId)
@@ -103,8 +102,6 @@ class SignInWidget(QWidget):
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     app.setStyleSheet(qdarkstyle.load_stylesheet_pyqt5())
-    mainMindow = SignInWidget()
-    mainMindow.show()
+    mainWindow = SignInWidget()
+    mainWindow.show()
     sys.exit(app.exec_())
-
-        

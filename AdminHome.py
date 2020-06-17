@@ -65,6 +65,6 @@ class AdminHome(QWidget):
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     app.setStyleSheet(qdarkstyle.load_stylesheet_pyqt5())
-    mainMindow = AdminHome()
-    mainMindow.show()
+    mainWindow = AdminHome()
+    mainWindow.show()
     sys.exit(app.exec_())

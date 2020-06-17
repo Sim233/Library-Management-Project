@@ -81,9 +81,10 @@ class BookStorageViewer(QWidget):
         self.queryModel = QSqlQueryModel()
         self.searchButtonClicked()
         self.tableView.setModel(self.queryModel)
+        # todo: 表头栏宽度可调
 
-        self.queryModel.setHeaderData(0, Qt.Horizontal, "书名")
-        self.queryModel.setHeaderData(1, Qt.Horizontal, "书号")
+        self.queryModel.setHeaderData(0, Qt.Horizontal, "书号")
+        self.queryModel.setHeaderData(1, Qt.Horizontal, "书名")
         self.queryModel.setHeaderData(2, Qt.Horizontal, "作者")
         self.queryModel.setHeaderData(3, Qt.Horizontal, "分类")
         self.queryModel.setHeaderData(4, Qt.Horizontal, "库存总量")
@@ -98,15 +99,16 @@ class BookStorageViewer(QWidget):
         self.backButton.clicked.connect(self.backButtonClicked)
         self.jumpToButton.clicked.connect(self.jumpToButtonClicked)
         self.searchEdit.returnPressed.connect(self.searchButtonClicked)
+        # todo: 超链接到书籍详情
 
     def setButtonStatus(self):
-        if(self.currentPage==self.totalPage):
+        if self.currentPage == self.totalPage:
             self.prevButton.setEnabled(True)
             self.backButton.setEnabled(False)
-        if(self.currentPage==1):
+        if self.currentPage == 1:
             self.backButton.setEnabled(True)
             self.prevButton.setEnabled(False)
-        if(self.currentPage<self.totalPage and self.currentPage>1):
+        if (self.currentPage < self.totalPage and self.currentPage > 1):
             self.prevButton.setEnabled(True)
             self.backButton.setEnabled(True)
 
@@ -147,7 +149,7 @@ class BookStorageViewer(QWidget):
             label = "/" + str(int(self.totalPage)) + "页"
             self.pageLabel.setText(label)
             queryCondition = (
-                        "select * from Book ORDER BY %s  limit %d,%d " % (conditionChoice, index, self.pageRecord))
+                    "select * from Book ORDER BY %s  limit %d,%d " % (conditionChoice, index, self.pageRecord))
             self.queryModel.setQuery(queryCondition)
             self.setButtonStatus()
             return
@@ -170,7 +172,7 @@ class BookStorageViewer(QWidget):
             label = "/" + str(int(self.totalPage)) + "页"
             self.pageLabel.setText(label)
             queryCondition = (
-                       "select * from Book ORDER BY %s  limit %d,%d " % (
+                    "select * from Book ORDER BY %s  limit %d,%d " % (
                 conditionChoice, index, self.pageRecord))
             self.queryModel.setQuery(queryCondition)
             self.setButtonStatus()
@@ -183,7 +185,6 @@ class BookStorageViewer(QWidget):
         self.queryModel.setQuery(queryCondition)
         self.setButtonStatus()
         return
-
 
     # 点击查询
     def searchButtonClicked(self):
@@ -231,12 +232,10 @@ class BookStorageViewer(QWidget):
         self.recordQuery(index)
         return
 
+
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     app.setStyleSheet(qdarkstyle.load_stylesheet_pyqt5())
-    mainMindow = BookStorageViewer()
-    mainMindow.show()
+    mainWindow = BookStorageViewer()
+    mainWindow.show()
     sys.exit(app.exec_())
-
-
-

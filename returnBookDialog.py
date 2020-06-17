@@ -18,9 +18,10 @@ class returnBookDialog(QDialog):
 
     def setUpUI(self):
         # 书名，书号，作者，分类，添加数量.出版社,出版日期
-        # 书籍分类：哲学类、社会科学类、政治类、法律类、军事类、经济类、文化类、教育类、体育类、语言文字类、艺术类、历史类、地理类、天文学类、生物学类、医学卫生类、农业类
-        BookCategory = ["哲学", "物理学", "政治", "法律", "军事", "经济", "文化", "教育", "体育", "语言文字", "艺术", "历史"
-            , "地理", "天文学", "生物学", "医学卫生", "农业"]
+        # 书籍分类
+        BookCategory = ["哲学", "数学", "物理学", "化学", "政治", "社会学", "法律", "军事", "经济学", "教育", "体育", "文学",
+                        "艺术", "历史", "地理", "天文学", "生物学", "医学卫生", "农业", "计算机", "工程技术", "心理学"]
+
         self.resize(300, 400)
         self.layout = QFormLayout()
         self.setLayout(self.layout)
@@ -31,8 +32,6 @@ class returnBookDialog(QDialog):
         # 表单结构
         # 归还人学号
         # 归还书籍书号
-
-
         self.userLable = QLabel('借阅人学号')
         self.uerEdit = QLabel(self.studentId)
         self.layout.addRow(self.userLable, self.uerEdit)
@@ -65,13 +64,10 @@ class returnBookDialog(QDialog):
         self.authNameEdit.setStyleSheet("background-color:#363636")
         self.categoryComboBox.setStyleSheet("background-color:#363636")
 
-
-
         self.returnBookButton = QPushButton('确认归还')
         self.returnBookButton.setFixedWidth(140)
         self.returnBookButton.setFixedHeight(32)
         self.layout.addRow('', self.returnBookButton)
-
 
         self.returnLabel.setMargin(8)
         self.layout.setVerticalSpacing(10)
@@ -80,12 +76,11 @@ class returnBookDialog(QDialog):
         self.bookIdEdit.returnPressed.connect(self.returnButtonClicked)
 
     def returnButtonClicked(self):
-
         bookId = self.bookIdEdit.text()
         returnId = self.studentId + bookId
         # 索书号为空时设置提示
-        if bookId =='':
-            print(QMessageBox.warning(self, '警告', '这本书不存在，请检查输入', QMessageBox.Ok))
+        if bookId == '':
+            print(QMessageBox.warning(self, '警告', '索书号不能为空，请查看输入', QMessageBox.Ok))
             return
 
         # 打开数据库进行操作
@@ -94,32 +89,39 @@ class returnBookDialog(QDialog):
         db.open()
         query = QSqlQuery()
 
-        # 检查是否借书
-        sql = "SELECT * from borrow where identiID = '%s'" %returnId
+        # 根据索书号进行查询：
+        sql = "SELECT * from book where bookID='%s'" % bookId
         query.exec_(sql)
-        if(not query.next()):
+        if (not query.next()):
+            print(QMessageBox.warning(self, "警告", "你所要借的书不存在，请查看输入", QMessageBox.Ok))
+            return
+
+        # 检查是否借书
+        sql = "SELECT * from borrow where identiID = '%s'" % returnId
+        query.exec_(sql)
+        if (not query.next()):
             print(QMessageBox.warning(self, '提示', '您并未借阅这本书，请检查输入', QMessageBox.Ok))
             return
 
         # 更新操作
         # 更新user
-        sql = "UPDATE User SET numborrowed = numborrowed - 1 where studentID = '%s'" %self.studentId
+        sql = "UPDATE user SET numborrowed = numborrowed - 1 where userID = '%s'" % self.studentId
         query.exec_(sql)
         db.commit()
 
         # 更新book
-        sql = "UPDATE book SET numavai = numavai + 1 where bookID = '%s'" %bookId
+        sql = "UPDATE book SET numavai = numavai + 1 where bookID = '%s'" % bookId
         query.exec_(sql)
         db.commit()
 
         # 在borrow表中删除借书目录
-        sql = "DELETE from borrow where identiID = '%s'" %returnId
+        sql = "DELETE from borrow where identiID = '%s'" % returnId
         query.exec_(sql)
         db.commit()
         print(QMessageBox.information(self, "提示", "归还成功!", QMessageBox.Yes, QMessageBox.Yes))
         self.return_book_success_signal.emit()
         self.close()
-        return
+        return  # todo: 提示写书评
 
     def bookIdEditChanged(self):
         bookId = self.bookIdEdit.text()
@@ -141,8 +143,6 @@ class returnBookDialog(QDialog):
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     app.setStyleSheet(qdarkstyle.load_stylesheet_pyqt5())
-    mainMindow = returnBookDialog("12345678")
-    mainMindow.show()
+    mainWindow = returnBookDialog("12345678")
+    mainWindow.show()
     sys.exit(app.exec_())
-
-

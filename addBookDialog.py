@@ -36,11 +36,11 @@ class addBookDialog(QDialog):
         # 开始设定输入内容
         # 书籍名称
         # 书籍编号(8位)
-        # 书籍分类（哲学类、社会科学类、政治类、法律类、军事类、经济类、文化类、教育类、体育类、语言文字类、艺术类、历史类、地理类）
+        # 书籍分类
         # 书籍录入本数
 
-        bookCategory =["哲学", "物理学","政治", "法律", "军事", "经济", "文化", "教育", "体育", "语言文字", "艺术", "历史"
-            , "地理", "天文学", "生物学", "医学卫生", "农业"]
+        BookCategory = ["哲学", "数学", "物理学", "化学", "政治", "社会学", "法律", "军事", "经济学", "教育", "体育", "文学",
+                        "艺术", "历史", "地理", "天文学", "生物学", "医学卫生", "农业", "计算机", "工程技术", "心理学"]
 
         self.bookNameLabel = QLabel('书籍名称')
         self.bookNameLineEdit = QLineEdit()
@@ -59,18 +59,17 @@ class addBookDialog(QDialog):
         self.bookaurLineEdit.setMaxLength(10)
         self.layout.addRow(self.bookaurLabel, self.bookaurLineEdit)
 
+        # 将书籍种类设置为下拉菜单选择形式
         self.bookCateLabel = QLabel('书籍分类')
         self.bookBox = QComboBox()
-        self.bookBox.addItems(bookCategory)
+        self.bookBox.addItems(BookCategory)
         self.layout.addRow(self.bookCateLabel, self.bookBox)
-        # 将书籍种类设置为下拉菜单选择形式
 
         self.bookNumLabel = QLabel('新增本数')
         self.bookNumLineEdit = QLineEdit()
         self.bookNumLineEdit.setMaxLength(3)
         self.bookNumLineEdit.setValidator(QIntValidator())
         self.layout.addRow(self.bookNumLabel, self.bookNumLineEdit)
-
 
         # 设置按钮
         self.addBookButton = QPushButton('添加')
@@ -102,23 +101,27 @@ class addBookDialog(QDialog):
             else:
                 print('失败')
             query = QSqlQuery()
-            sql = "SELECT * FROM book WHERE bookID='%s'" % (bookID)
+            sql = "SELECT * FROM book WHERE bookID='%s'" % bookID
             query.exec_(sql)
             if (query.next()):
-                sql = "UPDATE book SET numstore=numstore+%d,numavai=numavai+%d WHERE bookID='%s'" % (bookNum, bookNum, bookID)
+                sql = "UPDATE book SET numstore = numstore + %d, numavai = numavai + %d WHERE bookID='%s'" % (bookNum, bookNum, bookID)
                 print('旧书')
+                query.exec_(sql)
+                db.commit()
+                print(QMessageBox.information(self, '提示', '添加旧书数目成功！', QMessageBox.Ok))
             else:
                 sql = "Insert into book Values ('%s', '%s', '%s','%s', '%d', '%d')"%(
-                    bookName, bookID, bookaur, bookCate, bookNum, bookNum
+                    bookID, bookName, bookaur, bookCate, bookNum, bookNum
                 )
                 print('新书')
-            query.exec_(sql)
-            db.commit()
-            print(QMessageBox.information(self, '提示', '添加书籍信息成功！', QMessageBox.Ok))
+                query.exec_(sql)
+                db.commit()
+                print(QMessageBox.information(self, '提示', '添加书籍信息成功！', QMessageBox.Ok))
             self.add_book_success_signal.emit()
             self.close()
             self.clearEdit()
         return
+
     def clearEdit(self):
         self.bookNameLineEdit.clear()
         self.bookIDLineEdit.clear()
@@ -128,28 +131,6 @@ class addBookDialog(QDialog):
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     app.setStyleSheet(qdarkstyle.load_stylesheet_pyqt5())
-    mainMindow = addBookDialog()
-    mainMindow.show()
+    mainWindow = addBookDialog()
+    mainWindow.show()
     sys.exit(app.exec_())
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

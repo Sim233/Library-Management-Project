@@ -36,8 +36,8 @@ class BorrowStatusViewer(QWidget):
         self.borrowedQueryModel = QSqlQueryModel()
         self.borrowedTableView.setModel(self.borrowedQueryModel)
         self.borrowedQuery()
-        self.borrowedQueryModel.setHeaderData(0, Qt.Horizontal, "书名")
-        self.borrowedQueryModel.setHeaderData(1, Qt.Horizontal, "书号")
+        self.borrowedQueryModel.setHeaderData(0, Qt.Horizontal, "书号")
+        self.borrowedQueryModel.setHeaderData(1, Qt.Horizontal, "书名")
         self.borrowedQueryModel.setHeaderData(2, Qt.Horizontal, "作者")
         self.borrowedQueryModel.setHeaderData(3, Qt.Horizontal, "分类")
         self.borrowedQueryModel.setHeaderData(4, Qt.Horizontal, "借出时间")
@@ -49,7 +49,8 @@ class BorrowStatusViewer(QWidget):
         return
 
     def borrowedQuery(self):
-        sql = "SELECT Book.bookName,Book.bookId,book.bookaur,book.bookcate,borrow.borrowtime,borrow.returntime FROM Book,borrow WHERE Book.BookId=borrow.bookID AND borrow.student_ID='%s'" % self.studentId
+        sql = "SELECT Book.bookID, Book.bookName, book.bookAur, book.bookCategory, borrow.borrowtime, borrow.returntime " \
+              "FROM Book,borrow WHERE Book.BookId=borrow.bookID AND borrow.userID='%s' order by borrow.borrowtime asc" % self.studentId
         self.borrowedQueryModel.setQuery(sql)
         return
 
@@ -57,6 +58,6 @@ class BorrowStatusViewer(QWidget):
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     app.setStyleSheet(qdarkstyle.load_stylesheet_pyqt5())
-    mainMindow = BorrowStatusViewer("12345678")
-    mainMindow.show()
+    mainWindow = BorrowStatusViewer("12345678")
+    mainWindow.show()
     sys.exit(app.exec_())

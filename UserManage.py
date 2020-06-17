@@ -48,12 +48,12 @@ class UserManage(QDialog):
         self.tableWidget.itemClicked.connect(self.getStudentInfo)
 
     def getResult(self):
-        sql = "SELECT StudentId,stuName FROM User WHERE IsAdmin=0"
+        sql = "SELECT userId, userName FROM user WHERE IsAdmin=0"
         self.query.exec_(sql)
         self.userCount = 0;
         while (self.query.next()):
             self.userCount += 1;
-        sql = "SELECT StudentId,stuName FROM User WHERE IsAdmin=0"
+        sql = "SELECT userId,userName FROM user WHERE IsAdmin=0"
         self.query.exec_(sql)
 
     def setRows(self):
@@ -83,6 +83,6 @@ class UserManage(QDialog):
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     app.setStyleSheet(qdarkstyle.load_stylesheet_pyqt5())
-    mainMindow = UserManage()
-    mainMindow.show()
+    mainWindow = UserManage()
+    mainWindow.show()
     sys.exit(app.exec_())
