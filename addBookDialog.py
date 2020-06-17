@@ -88,7 +88,7 @@ class addBookDialog(QDialog):
         bookCate = self.bookBox.currentText()
         bookNum = self.bookNumLineEdit.text()
         bookaur = self.bookaurLineEdit.text()
-        if(bookName == '' or bookID == '' or bookCate == '' or bookNum == '' or bookaur == ''):
+        if (bookName == '' or bookID == '' or bookCate == '' or bookNum == '' or bookaur == ''):
             print(QMessageBox.warning(self, '警告', '字段不能为空', QMessageBox.Ok))
         else:
             bookNum = int(bookNum)

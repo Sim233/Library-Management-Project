@@ -76,7 +76,7 @@ class dropBookDialog(QDialog):
         bookID = self.bookIdEdit.text()
         # 字符串拼接的方式来实现借书操作的Id号
         # 如果索书号为空
-        if (bookID == ""):
+        if bookID == "":
             print(QMessageBox.warning(self, "警告", "索书号不能为空，请查看输入", QMessageBox.Ok))
             return
         # 打开数据库进行操作
@@ -88,7 +88,7 @@ class dropBookDialog(QDialog):
         #根据索书号进行查询：
         sql = "SELECT * from book where bookID='%s' " % bookID
         query.exec_(sql)
-        if (not query.next()):
+        if not query.next():
             print(QMessageBox.warning(self, "警告", "你所要删除的书不存在，请查看输入", QMessageBox.Ok))
             return
         elif query.value(5) != query.value(4):
@@ -100,8 +100,11 @@ class dropBookDialog(QDialog):
         sql = "DELETE from book where bookID='%s'" % bookID
         query.exec_(sql)
         db.commit()
+        sql = "DELETE from comment where bookID='%s'" % bookID
+        query.exec_(sql)
+        db.commit()
         print(QMessageBox.information(self, "提示", "删除书籍成功!", QMessageBox.Yes, QMessageBox.Yes))
-        # todo: 删除书籍评论
+
         self.drop_book_success_signal.emit()
         self.close()
         return

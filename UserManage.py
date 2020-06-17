@@ -8,7 +8,7 @@ import time
 import sip
 
 class UserManage(QDialog):
-    def __init__(self,parent=None):
+    def __init__(self, parent=None):
         super(UserManage, self).__init__(parent)
         self.resize(400, 500)
         self.layout = QVBoxLayout()
@@ -17,7 +17,6 @@ class UserManage(QDialog):
         # 用户数
         self.userCount = 0
         self.setUpUI()
-        # todo: 可修改学生信息
 
     def setUpUI(self):
         self.db = QSqlDatabase.addDatabase("QSQLITE")

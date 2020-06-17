@@ -31,7 +31,7 @@ class AdminHome(QWidget):
         self.overdueUserButton = QPushButton("逾期用户")
         self.allBookButton = QPushButton("所有书籍")
         self.bookCateCountButton = QPushButton("书籍统计")
-        # todo: 画饼图
+
         self.userManageButton.setFont(font)
         self.addBookButton.setFont(font)
         self.dropBookButton.setFont(font)

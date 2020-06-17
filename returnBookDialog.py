@@ -92,14 +92,14 @@ class returnBookDialog(QDialog):
         # 根据索书号进行查询：
         sql = "SELECT * from book where bookID='%s'" % bookId
         query.exec_(sql)
-        if (not query.next()):
+        if not query.next():
             print(QMessageBox.warning(self, "警告", "你所要借的书不存在，请查看输入", QMessageBox.Ok))
             return
 
         # 检查是否借书
         sql = "SELECT * from borrow where identiID = '%s'" % returnId
         query.exec_(sql)
-        if (not query.next()):
+        if not query.next():
             print(QMessageBox.warning(self, '提示', '您并未借阅这本书，请检查输入', QMessageBox.Ok))
             return
 
@@ -139,6 +139,7 @@ class returnBookDialog(QDialog):
             self.authNameEdit.setText(query.value(2))
             self.categoryComboBox.setCurrentText(query.value(3))
         return
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
