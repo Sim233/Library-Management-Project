@@ -6,7 +6,7 @@ import qdarkstyle
 from addBookDialog import addBookDialog
 from dropBookDialog import dropBookDialog
 from bookStorageViewer import BookStorageViewer
-from UserManage import UserManage
+from UserManage import UserManage, OverdueUserManage
 
 
 class AdminHome(QWidget):
@@ -26,19 +26,25 @@ class AdminHome(QWidget):
         self.userManageButton = QPushButton("用户管理")
         self.addBookButton = QPushButton("添加书籍")
         self.dropBookButton = QPushButton("淘汰书籍")
-        # todo: 逾期未还书名单，书籍
+        self.overdueUserButton = QPushButton("逾期用户")
+
+        # todo: 画饼图
         self.userManageButton.setFont(font)
         self.addBookButton.setFont(font)
         self.dropBookButton.setFont(font)
+        self.overdueUserButton.setFont(font)
         self.userManageButton.setFixedWidth(100)
         self.userManageButton.setFixedHeight(42)
         self.addBookButton.setFixedWidth(100)
         self.addBookButton.setFixedHeight(42)
         self.dropBookButton.setFixedWidth(100)
         self.dropBookButton.setFixedHeight(42)
+        self.overdueUserButton.setFixedWidth(100)
+        self.overdueUserButton.setFixedHeight(42)
         self.buttonlayout.addWidget(self.addBookButton)
         self.buttonlayout.addWidget(self.dropBookButton)
         self.buttonlayout.addWidget(self.userManageButton)
+        self.buttonlayout.addWidget(self.overdueUserButton)
         self.layout.addLayout(self.buttonlayout)
         self.storageView = BookStorageViewer()
         self.layout.addWidget(self.storageView)
@@ -46,6 +52,7 @@ class AdminHome(QWidget):
         self.addBookButton.clicked.connect(self.addBookButtonClicked)
         self.dropBookButton.clicked.connect(self.dropBookButtonClicked)
         self.userManageButton.clicked.connect(self.userManage)
+        self.overdueUserButton.clicked.connect(self.overdueUserManage)
 
     def addBookButtonClicked(self):
         addDialog = addBookDialog(self)
@@ -63,6 +70,11 @@ class AdminHome(QWidget):
         UserDelete = UserManage(self)
         UserDelete.show()
         UserDelete.exec_()
+
+    def overdueUserManage(self):
+        overdueUserDialog = OverdueUserManage(self)
+        overdueUserDialog.show()
+        overdueUserDialog.exec_()
 
 
 if __name__ == "__main__":
