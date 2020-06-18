@@ -7,7 +7,7 @@ from PyQt5.QtSql import *
 
 
 class SignInWidget(QWidget):
-    is_admin_signal = pyqtSignal()
+    is_admin_signal = pyqtSignal(str)
     is_student_signal = pyqtSignal(str)
 
     def __init__(self):
@@ -91,7 +91,7 @@ class SignInWidget(QWidget):
             if (studentId == query.value(0) and password == query.value(2)):
                 # 如果是管理员
                 if query.value(3) == 1:
-                    self.is_admin_signal.emit()
+                    self.is_admin_signal.emit(studentId)
                 else:
                     self.is_student_signal.emit(studentId)
             else:

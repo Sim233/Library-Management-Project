@@ -32,7 +32,6 @@ class borrowBookDialog(QDialog):
             self.resize(200, 100)
             self.layout = QFormLayout()
             self.setLayout(self.layout)
-            self.layout.setVerticalSpacing(100)
             self.gradLabel = QLabel('您已毕业，无借书权限！')
             self.layout.addRow('', self.gradLabel)
             self.gradLabel.setAlignment(Qt.AlignCenter)
@@ -55,7 +54,6 @@ class borrowBookDialog(QDialog):
             self.resize(250, 100)
             self.layout = QFormLayout()
             self.setLayout(self.layout)
-            self.layout.setVerticalSpacing(100)
             self.gradLabel = QLabel('您有逾期未还的书籍，暂无借书权限！')
             self.layout.addRow('', self.gradLabel)
             self.gradLabel.setAlignment(Qt.AlignCenter)
@@ -149,8 +147,8 @@ class borrowBookDialog(QDialog):
         # 根据索书号进行查询：
         sql = "SELECT * from book where bookID='%s' " % bookId
         query.exec_(sql)
-        if (not query.next()):
-            print(QMessageBox.warning(self, "警告", "你所要借的书不存在，请查看输入", QMessageBox.Ok))
+        if not query.next():
+            print(QMessageBox.warning(self, "警告", "您要借的书不存在，请查看输入", QMessageBox.Ok))
             return
         elif query.value(5) == 0:
             print(QMessageBox.information(self, "警告", "这本书已经被借完，请之后再来", QMessageBox.Ok))
@@ -205,13 +203,14 @@ class borrowBookDialog(QDialog):
         db.setDatabaseName('./library.db')
         db.open()
         query = QSqlQuery()
-        sql = "SELECT * from book where bookID='%s'" %bookId
+        sql = "SELECT * from book where bookID='%s'" % bookId
         query.exec_(sql)
         if query.next():
             self.bookNameEdit.setText(query.value(1))
             self.authNameEdit.setText(query.value(2))
             self.categoryComboBox.setCurrentText(query.value(3))
         return
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

@@ -17,7 +17,7 @@ class addBookDialog(QDialog):
         self.setWindowTitle("添加书籍")
 
     def setUpUI(self):
-        self.resize(1000, 800)
+        self.resize(500, 600)
         # 设置窗口为垂直布局
         self.layout = QFormLayout()
         self.setLayout(self.layout)

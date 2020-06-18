@@ -6,7 +6,7 @@
 
 数据库名为library，以db形式存储，**使用数据库SQLite3**
 
-分为三个表，分别为user，book，borrow。
+分为四个表，分别为user，book，borrow，comment。
 
 user用来存储用户信息。其中的列按顺序为：
 
@@ -44,17 +44,29 @@ numavai 现有可借的书籍量 int 初始化为与numstore相同数值
 
 
 
-borrow用来存储借书记录，列按顺序为：
+borrow用来存储借书记录，其中的列按顺序为：
 
 userID 借书的用户ID（**外键**）
 
 bookID 借阅的书籍编号 （**外键**）
 
-identiID 借阅记录编号，为studentID+bookID （**主键**）
+identiID 借阅记录编号，为userID+bookID （**主键**）
 
 borrowtime 为date类型，借书时间
 
 returntime 归还时间，默认为借书时间三月后
+
+
+
+comment用来存储评论记录，其中的列按顺序为：
+
+bookID 评论的书籍编号（**外键**）
+
+userID 评论的用户编号（**外键**）
+
+commentID 评论编号，为userID+bookID（**主键**）
+
+comContent 评论内容
 
 
 
@@ -83,3 +95,7 @@ returntime 归还时间，默认为借书时间三月后
 `returnBookDialog.py` 实现归还书籍的会话
 
 `borrowStatusViewer.py` 查看已借阅的书籍
+
+`BookDetail.py` 查看书籍详情并添加评论
+
+`bookCateCount.py` 生成各种书籍种数的饼状图并显示

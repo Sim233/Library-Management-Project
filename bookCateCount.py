@@ -46,6 +46,7 @@ class bookCateCountViewer(QWidget):
 
         self.PicLabel = QLabel()
         self.PicLabel.setPixmap(QPixmap('./CateCount.jpg'))
+        self.PicLabel.setAlignment(Qt.AlignCenter)
         self.layout.addWidget(self.PicLabel)
 
 
