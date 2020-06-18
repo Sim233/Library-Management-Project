@@ -7,6 +7,7 @@ from PyQt5.QtSql import *
 import matplotlib.pyplot as plt
 import sip
 
+
 class bookCateCountViewer(QWidget):
     def __init__(self):
         super(bookCateCountViewer, self).__init__()

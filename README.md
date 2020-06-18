@@ -1,56 +1,53 @@
-# 数据库技术及应用大作业——图书馆管理系统
+### 大作业文档说明
 
-需要Python及PyQt5, sip库运行本项目，数据库类型为SQLite3。
+##### 数据库结构
 
-### 数据库结构
+数据库名为library，以db形式存储
 
-数据库名为library，以db形式存储，**使用数据库SQLite3**
-
-分为四个表，分别为user，book，borrow，comment。
+分为三个表，分别为user，book，borrow。
 
 user用来存储用户信息。其中的列按顺序为：
 
-userID 用来存储用户的学号 （**主键**）
+studentID 8位 用来存储用户的学号。主键
 
-userName 用户姓名
+stuname 用户姓名
 
-uPassword 登录密码
+stupassword 登录密码
 
 IsAdmin int 类型，0则为学生，1为管理员
 
 numborrowed 借书本数。设置最多借六本书
 
-uGraduated int类型，在校为0，毕业为1，毕业生无借书权限，但可以还书
-
 
 
 book用来存储书籍信息，其中列按顺序为：
 
-bookID 书籍编号，为8位字符 （**主键**）
+bookname 书名
 
-bookName 书名
+bookID 书籍编号，为8位字符 主键
 
-bookAur 书籍作者
+bookaur 书籍作者
 
-bookCategory 书籍分类，其可选类别为：
+bookcate 书籍分类。可选类别为：
 
 ```
-["哲学", "数学", "物理学", "化学", "政治", "社会学", "法律", "军事", "经济学", "教育", "体育", "文学", "艺术", "历史", "地理", "天文学", "生物学", "医学卫生", "农业", "计算机", "工程技术", "心理学"]
+["哲学", "物理学", "政治", "法律", "军事", "经济", "文化", "教育", "体育", "语言文字", "艺术", "历史"
+    , "地理", "天文学", "生物学", "医学卫生", "农业"]
 ```
 
-numstore 总库存量 int
+numstore 总库存量
 
-numavai 现有可借的书籍量 int 初始化为与numstore相同数值
+numavai 现有可借的书籍量
 
 
 
-borrow用来存储借书记录，其中的列按顺序为：
+borrow用来存储借书记录，列按顺序为：
 
-userID 借书的用户ID（**外键**）
+student_ID 借书的用户ID
 
-bookID 借阅的书籍编号 （**外键**）
+bookID 借阅的书籍编号
 
-identiID 借阅记录编号，为userID+bookID （**主键**）
+identiID 借阅记录编号，为studentID+bookID ，主键
 
 borrowtime 为date类型，借书时间
 
@@ -58,44 +55,28 @@ returntime 归还时间，默认为借书时间三月后
 
 
 
-comment用来存储评论记录，其中的列按顺序为：
+目前完成的文件有：
 
-bookID 评论的书籍编号（**外键**）
+MainWindow 数据库系统主页面，可连接到注册和登录页面
 
-userID 评论的用户编号（**外键**）
+register 注册页面，创建新的用户
 
-commentID 评论编号，为userID+bookID（**主键**）
+Login 登入页面，登录后会根据用户类型跳转到AdminHome或StuHome
 
-comContent 评论内容
+AdminHome 管理员主页，可执行的操作按钮为添加书籍、删除书籍、查看用户学号和姓名
 
+StuHome 学生主页，可执行的操作为书籍查找，借阅书籍，归还书籍
 
+bookstorageViewer 查看与查询书籍功能实现
 
-### 程序结构
+UserManage 查看已录入的学生学号和姓名
 
-`MainWindow.py` 数据库系统主页面，可连接到注册和登录页面
+addbookDialog 实现加入书籍的会话
 
-`register.py` 注册页面，创建新的用户
+dropbookDialog 实现删除书籍的会话
 
-`Login.py` 登入页面，登录后会根据用户类型跳转到AdminHome或StuHome
+borrowBookDialog 实现借阅书籍的会话
 
-`AdminHome.py` 管理员主页，可执行的操作按钮为添加书籍、删除书籍、查看用户学号和姓名
+returnBookDialog 实现归还书籍的会话
 
-`StuHome.py` 学生主页，可执行的操作为书籍查找，借阅书籍，归还书籍
-
-`bookStorageViewer.py` 查看与查询书籍功能实现
-
-`UserManage.py` 查看已录入的学生学号和姓名
-
-`addBookDialog.py` 实现加入书籍的会话
-
-`dropBookDialog.py` 实现删除书籍的会话
-
-`borrowBookDialog.py` 实现借阅书籍的会话
-
-`returnBookDialog.py` 实现归还书籍的会话
-
-`borrowStatusViewer.py` 查看已借阅的书籍
-
-`BookDetail.py` 查看书籍详情并添加评论
-
-`bookCateCount.py` 生成各种书籍种数的饼状图并显示
+borrowstatusViewer 查看已借阅的书籍

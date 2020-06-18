@@ -155,7 +155,7 @@ class borrowBookDialog(QDialog):
             return
 
         # 设置借书上限：若一个读者已经借了6本书，则不能再次借书
-        sql = "SELECT * from user where userID='%s' " % bookId
+        sql = "SELECT * from user where userID='%s' " % self.studentId
         query.exec_(sql)
         if query.next():
             booknum = query.value(4)
